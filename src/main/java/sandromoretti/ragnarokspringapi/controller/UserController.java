@@ -25,6 +25,9 @@ public class UserController {
     @Autowired
     UserService userService;
 
+    @Autowired
+    MailService mailService;
+
     @RolesAllowed(GroupsConfig.ADMIN)
     @GetMapping(path="")
     public Iterable<User> getAllUsers(){
