@@ -13,8 +13,8 @@ public class TomCatConfig implements WebServerFactoryCustomizer<TomcatServletWeb
 
     @Override
     public void customize(TomcatServletWebServerFactory factory){
-        Connector connector = new Connector(TomcatServletWebServerFactory.DEFAULT_PROTOCOL);
+        /*Connector connector = new Connector(TomcatServletWebServerFactory.DEFAULT_PROTOCOL);
         connector.setPort(httpPort);
-        factory.addAdditionalTomcatConnectors(connector);
+        factory.addAdditionalTomcatConnectors(connector);*/
     }
 }

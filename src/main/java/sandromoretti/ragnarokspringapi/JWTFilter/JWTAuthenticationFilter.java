@@ -33,12 +33,12 @@ public class JWTAuthenticationFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-       String jwt = request.getHeader(SecurityConstants.HEADER_STRING);
-        if(jwt != null && jwt.startsWith(SecurityConstants.TOKEN_PREFIX)){
+       String jwt = request.getHeader(SecurityConstants.AUTHORIZATION_HEADER_STRING);
+        if(jwt != null && jwt.startsWith(SecurityConstants.JWT_TOKEN_PREFIX)){
             try {
-                jwt = jwt.split(SecurityConstants.TOKEN_PREFIX)[1];
+                jwt = jwt.split(SecurityConstants.JWT_TOKEN_PREFIX)[1];
 
-                String subject = JWT.require(Algorithm.HMAC256(SecurityConstants.SECRET)).build().verify(jwt).getSubject();
+                String subject = JWT.require(Algorithm.HMAC256(SecurityConstants.JWT_SECRET)).build().verify(jwt).getSubject();
                 User user = userRepository.findByUserid(subject);
                 if (user == null) {
                     // invalid user on token. this should not happen

@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div class="footer" th:fragment="footer">
+    <table border="0" cellpadding="0" cellspacing="0">
+        <tr>
+            <td class="content-block">
+                <span class="apple-link">[[${server_name}]]</span><br>
+                <a th:href="${site_url_home}">[[${site_url_home}]]</a>
+                <p><span
+                        th:text="#{mail.fragment.footer.thisisanautomatcemail}">Este é um e-mail automático</span><br><span
+                        th:text="#{mail.fragment.footer.donotreply}">Don't reply</span></p>
+            </td>
+        </tr>
+    </table>
+</div>
+</body>
+</html>

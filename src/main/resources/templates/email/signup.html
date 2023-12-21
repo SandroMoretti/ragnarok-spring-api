@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{email/fragments/head :: head}">
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<table border="0" cellpadding="0" cellspacing="0" class="body">
+    <tr>
+        <td>&nbsp;</td>
+        <td class="container">
+            <div class="content">
+                <span class="preheader"></span>
+                <table class="main">
+                    <tr>
+                        <td class="wrapper">
+                            <table border="0" cellpadding="0" cellspacing="0">
+                                <tr>
+                                    <td>
+                                        <p><span th:text="#{mail.signup.hello}">Hello</span> <span class="gallact-info">[[${username}]]</span>,
+                                        </p>
+                                        <p><span th:text="#{mail.signup.welcome}">Welcome to</span> <span
+                                                class="gallact-server">[[${server_name}]]</span>.
+                                        </p>
+                                        <p><span th:text="#{mail.signup.wereceivedaregistration}">We received a registration using the e-mail</span>
+                                            <span
+                                                    class="gallact-info">[[${usermail}]]</span>.</p>
+                                        <p th:text="#{mail.signup.youaccountisavailable}">Your account is now available
+                                            and you can
+                                            now enter the game whenever you want.</p>
+                                        <p th:text="#{mail.signup.ifyouhavenotdownloadedthegame}">If you have not
+                                            downloaded the
+                                            game, click in this button to start the download!</p>
+                                        <table border="0" cellpadding="0" cellspacing="0" class="btn btn-primary">
+                                            <tbody>
+                                            <tr>
+                                                <td align="center">
+                                                    <table border="0" cellpadding="0" cellspacing="0">
+                                                        <tbody>
+                                                        <tr>
+                                                            <td><a style="color: #fff"
+                                                                   th:href="${site_url_download}"
+                                                                   target="_blank" th:text="#{mail.signup.download}">Download
+                                                                [[${server_name}]]</a></td>
+                                                        </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </td>
+                                            </tr>
+                                            </tbody>
+                                        </table>
+                                        <p th:text="#{mail.signup.ifyouhavenotregistereredignore}">If you have not
+                                            registered on our site, please ignore this e-mail!</p>
+                                    </td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="wrapper">
+                            <div th:replace="~{email/fragments/footer.html :: footer}">
+
+                            </div>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </td>
+    </tr>
+</table>
+</body>
+</html>

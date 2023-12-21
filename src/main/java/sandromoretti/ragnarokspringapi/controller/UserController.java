@@ -12,6 +12,10 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import sandromoretti.ragnarokspringapi.entity.User;
 import sandromoretti.ragnarokspringapi.config.GroupsConfig;
+import sandromoretti.ragnarokspringapi.request.UserChangePasswordRequest;
+import sandromoretti.ragnarokspringapi.request.UserPasswordResetRequest;
+import sandromoretti.ragnarokspringapi.response.UserChangePasswordResponse;
+import sandromoretti.ragnarokspringapi.response.UserPasswordResetResponse;
 import sandromoretti.ragnarokspringapi.response.UserSignUpResponse;
 import sandromoretti.ragnarokspringapi.service.UserService;
 import sandromoretti.ragnarokspringapi.request.UserSignInRequest;
@@ -24,9 +28,6 @@ import sandromoretti.ragnarokspringapi.response.UserSignInResponse;
 public class UserController {
     @Autowired
     UserService userService;
-
-    @Autowired
-    MailService mailService;
 
     @RolesAllowed(GroupsConfig.ADMIN)
     @GetMapping(path="")
@@ -42,6 +43,16 @@ public class UserController {
     public ResponseEntity<User> getUserById(@PathVariable int id){
         User user =  userService.getUserById(id).orElseThrow();
         return new ResponseEntity<>(user, HttpStatus.OK);
+    }
+
+    @PostMapping(path="/password-reset")
+    public ResponseEntity<UserPasswordResetResponse> passwordResetEmail(@RequestBody @Valid UserPasswordResetRequest userPasswordResetRequest){
+        return this.userService.sendPasswordResetEmail(userPasswordResetRequest);
+    }
+
+    @PatchMapping(path="/{account_id}/password")
+    public ResponseEntity<UserChangePasswordResponse> changePassword(@PathVariable int account_id, @RequestBody @Valid UserChangePasswordRequest userChangePasswordRequest){
+        return this.userService.changePassword(account_id, userChangePasswordRequest);
     }
 
     @PostMapping(path="")

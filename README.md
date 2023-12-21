@@ -28,9 +28,9 @@ I'm planning to work in the following features:
 
 1) ✅ Users resource endpoints for sign up and sign in
 2) ✅ Base integration for Mercado Pago api
-3) 💻 (Working in) Mail send
-4) 💻 (Working in) Recovery password
-5) ❌ Characters resources (example: endpoint to list characters or reset character position)
+3) ✅ Mail send
+4) ✅ Recovery password
+5) 💻 (Working in) Characters resources (example: endpoint to list characters or reset character position)
 6) ❌ Donation full integration and npc
 7) ❌ Server statics (like users online)
 8) ❌ Server status (map:on/char:on/login:on)

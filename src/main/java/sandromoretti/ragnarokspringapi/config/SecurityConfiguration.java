@@ -42,6 +42,8 @@ public class SecurityConfiguration {
                         //.requestMatchers("*").permitAll()
                         //.requestMatchers("/users").hasAuthority("MANAGER_USERSZ")
                         .requestMatchers(HttpMethod.POST, "/users/sign-in").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/users/password-reset").permitAll()
+                        .requestMatchers(HttpMethod.PATCH, "/users/*/password").permitAll()
                         .requestMatchers(HttpMethod.GET, "/users").authenticated()
                         .requestMatchers(HttpMethod.GET, "/users/*").authenticated()
                         .requestMatchers(HttpMethod.POST, "/donations").authenticated()

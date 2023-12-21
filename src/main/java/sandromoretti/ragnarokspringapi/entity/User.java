@@ -23,7 +23,7 @@ public class User {
     private String userid;
 
     @NotBlank(message = "Informe uma senha valida")
-    @Size(min=8, max=25)
+    @Size(min=6, max=32)
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String user_pass;
 
