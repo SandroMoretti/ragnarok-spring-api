@@ -22,6 +22,7 @@ import sandromoretti.ragnarokspringapi.repository.UserRepository;
 import sandromoretti.ragnarokspringapi.request.UserChangePasswordRequest;
 import sandromoretti.ragnarokspringapi.request.UserPasswordResetRequest;
 import sandromoretti.ragnarokspringapi.request.UserSignInRequest;
+import sandromoretti.ragnarokspringapi.request.UserSignUpRequest;
 import sandromoretti.ragnarokspringapi.response.UserChangePasswordResponse;
 import sandromoretti.ragnarokspringapi.response.UserPasswordResetResponse;
 import sandromoretti.ragnarokspringapi.response.UserSignInResponse;
@@ -52,6 +53,10 @@ public class UserService {
 
     public Optional<User> getUserById(int id){
         return userRepository.findById(id);
+    }
+
+    public User getUserByJWTSubject(String subject){
+        return userRepository.findByUserid(subject);
     }
 
     public Iterable<User> getAllUsers(){
@@ -129,25 +134,25 @@ public class UserService {
         return new ResponseEntity<>(new UserChangePasswordResponse(message), HttpStatus.OK);
     }
 
-    public ResponseEntity<UserSignUpResponse> signUp(User user){
+    public ResponseEntity<UserSignUpResponse> signUp(UserSignUpRequest userRequest){
         Locale locale = LocaleContextHolder.getLocale();
 
-        if(user.getGroup_id() != GroupsConfig.PLAYER_GROUP_ID){
-            String err_message = messageSource.getMessage("user.signup.error_invalid_group_id", null, locale);
-            return new ResponseEntity<>(new UserSignUpResponse(null, err_message, null), HttpStatus.BAD_REQUEST);
-        }
-        if(userRepository.findByUserid(user.getUserid()) != null){
+        if(userRepository.findByUserid(userRequest.getUserid()) != null){
             String err_message = messageSource.getMessage("user.signup.error_repeated.userid", null, locale);
             return new ResponseEntity<>(new UserSignUpResponse(null, err_message, null), HttpStatus.CONFLICT);
         }
-        if(userRepository.findByEmail(user.getEmail()) != null){
+        if(userRepository.findByEmail(userRequest.getEmail()) != null){
             String err_message = messageSource.getMessage("user.signup.error_repeated.email", null, locale);
             return new ResponseEntity<>(new UserSignUpResponse(null, err_message, null), HttpStatus.CONFLICT);
         }
 
         // all validations OK
-        user.setUser_pass(DigestUtils.md5DigestAsHex(user.getUser_pass().getBytes(StandardCharsets.UTF_8)));
+        userRequest.setUser_pass(DigestUtils.md5DigestAsHex(userRequest.getUser_pass().getBytes(StandardCharsets.UTF_8)));
 
+        User user = new User();
+        user.setEmail(userRequest.getEmail());
+        user.setUserid(userRequest.getUserid());
+        user.setUser_pass(userRequest.getUser_pass());
         User saved_user = userRepository.save(user);
         this.logger.info("New user: " + saved_user.toString());
         String message = messageSource.getMessage(saved_user != null ? "user.signup.create_success" : "user.signup.error_unknown_reason", null, locale);

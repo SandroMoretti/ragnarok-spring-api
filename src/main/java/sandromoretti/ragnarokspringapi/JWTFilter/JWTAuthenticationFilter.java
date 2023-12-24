@@ -15,6 +15,7 @@ import org.springframework.web.filter.OncePerRequestFilter;
 import sandromoretti.ragnarokspringapi.config.GroupsConfig;
 import sandromoretti.ragnarokspringapi.entity.User;
 import sandromoretti.ragnarokspringapi.repository.UserRepository;
+import sandromoretti.ragnarokspringapi.service.UserService;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -24,7 +25,7 @@ import java.util.List;
 @Component
 public class JWTAuthenticationFilter extends OncePerRequestFilter {
     @Autowired
-    UserRepository userRepository;
+    UserService userService;
 
     /*
     @Autowired
@@ -39,7 +40,7 @@ public class JWTAuthenticationFilter extends OncePerRequestFilter {
                 jwt = jwt.split(SecurityConstants.JWT_TOKEN_PREFIX)[1];
 
                 String subject = JWT.require(Algorithm.HMAC256(SecurityConstants.JWT_SECRET)).build().verify(jwt).getSubject();
-                User user = userRepository.findByUserid(subject);
+                User user = userService.getUserByJWTSubject(subject);
                 if (user == null) {
                     // invalid user on token. this should not happen
                     response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);

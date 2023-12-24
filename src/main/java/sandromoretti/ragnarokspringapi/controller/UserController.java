@@ -14,6 +14,7 @@ import sandromoretti.ragnarokspringapi.entity.User;
 import sandromoretti.ragnarokspringapi.config.GroupsConfig;
 import sandromoretti.ragnarokspringapi.request.UserChangePasswordRequest;
 import sandromoretti.ragnarokspringapi.request.UserPasswordResetRequest;
+import sandromoretti.ragnarokspringapi.request.UserSignUpRequest;
 import sandromoretti.ragnarokspringapi.response.UserChangePasswordResponse;
 import sandromoretti.ragnarokspringapi.response.UserPasswordResetResponse;
 import sandromoretti.ragnarokspringapi.response.UserSignUpResponse;
@@ -38,8 +39,8 @@ public class UserController {
 
 
     @Operation(security = { @SecurityRequirement(name = "bearer-key") })
-    @PreAuthorize(value = "authentication.principal.account_id == #id or hasAnyRole('"+ GroupsConfig.ADMIN+"', '"+ GroupsConfig.GAME_MASTER+"')")
-    @GetMapping(path="/{id}")
+    @PreAuthorize(value = "authentication.principal.account_id == #account_id or hasAnyRole('"+ GroupsConfig.ADMIN+"', '"+ GroupsConfig.GAME_MASTER+"')")
+    @GetMapping(path="/{account_id}")
     public ResponseEntity<User> getUserById(@PathVariable int id){
         User user =  userService.getUserById(id).orElseThrow();
         return new ResponseEntity<>(user, HttpStatus.OK);
@@ -56,8 +57,8 @@ public class UserController {
     }
 
     @PostMapping(path="")
-    public ResponseEntity<UserSignUpResponse> signUp(@RequestBody @Valid User user){
-        return userService.signUp(user);
+    public ResponseEntity<UserSignUpResponse> signUp(@RequestBody @Valid UserSignUpRequest userRequest){
+        return userService.signUp(userRequest);
     }
 
     @PostMapping(path="/sign-in")

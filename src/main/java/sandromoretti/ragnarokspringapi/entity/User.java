@@ -2,19 +2,21 @@ package sandromoretti.ragnarokspringapi.entity;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 
 import java.util.List;
 
 @Entity
-@Table(name="login")
+@Table(name="login", uniqueConstraints = { @UniqueConstraint(columnNames = { "userid", "email" })} )
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer account_id;
 
     @NotBlank(message = "Informe um e-mail valido")
+    @Email
     @Column(name="email", nullable = false, unique = true)
     private String email;
 
@@ -26,8 +28,6 @@ public class User {
     @Size(min=6, max=32)
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String user_pass;
-
-    private char sex;
 
     @Column(columnDefinition = "TINYINT")
     private int group_id;
@@ -65,14 +65,6 @@ public class User {
 
     public void setUser_pass(String user_pass) {
         this.user_pass = user_pass;
-    }
-
-    public char getSex() {
-        return sex;
-    }
-
-    public void setSex(char sex) {
-        this.sex = sex;
     }
 
     public int getGroup_id() {
